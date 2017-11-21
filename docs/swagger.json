@@ -1,0 +1,2106 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Demo App for Essential Medical",
+    "version": "0.0.1",
+    "title": "Essential Medical",
+    "termsOfService": "http://swagger.io/terms/"
+  },
+  "host": "api-essmed.firebaseio.com",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "catalog-type",
+      "description": "CRUD for catalog types"
+    },
+    {
+      "name": "pricing-schedule",
+      "description": "CRUD for Pricing Schedule"
+    },
+    {
+      "name": "pricebreak",
+      "description": "CRUD for Pricebreak"
+    },
+    {
+      "name": "catalog",
+      "description": "CRUD for Catalogs (Sections, Benefits, Levels, Covers)"
+    },
+    {
+      "name": "product",
+      "description": "Operations with Products"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/catalog-type.json": {
+      "get": {
+        "tags": [
+          "catalog-type"
+        ],
+        "summary": "Get All Catalog Types",
+        "description": "",
+        "operationId": "getCatalogTypeList",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/CatalogTypeList"
+            }
+          },
+          "404": {
+            "description": "Catalog Types not found"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:catalogTypes",
+              "read:catalogTypes"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "catalog-type"
+        ],
+        "summary": "Add a new Catalog Type",
+        "description": "",
+        "operationId": "addCatalogType",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Catalog Type object that needs to be added",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CatalogType"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:catalogTypes",
+              "read:catalogTypes"
+            ]
+          }
+        ]
+      }
+    },
+    "/catalog-type/{id}.json": {
+      "get": {
+        "tags": [
+          "catalog-type"
+        ],
+        "summary": "Get Catalog Type by Id",
+        "description": "",
+        "operationId": "getCatalogTypeById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true,
+            "description": "Id of the Catalog Type"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/CatalogType"
+            }
+          },
+          "400": {
+            "description": "Invalid Catalog Type ID"
+          },
+          "404": {
+            "description": "Catalog Type not found"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:catalogTypes",
+              "read:catalogTypes"
+            ]
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "catalog-type"
+        ],
+        "summary": "Update an existing Catalog Type",
+        "description": "",
+        "operationId": "updateCatalogType",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true,
+            "description": "Id of the Catalog Type"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Catalog Type object that needs to be updated",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CatalogType"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "CatalogType not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:catalogTypes",
+              "read:catalogTypes"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "catalog-type"
+        ],
+        "summary": "Delete Catalog Type",
+        "description": "",
+        "operationId": "deleteCatalogType",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true,
+            "description": "Id of the Catalog Type"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid Catalog Type ID"
+          },
+          "404": {
+            "description": "Catalog Type not found"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:catalogTypes",
+              "read:catalogTypes"
+            ]
+          }
+        ]
+      }
+    },
+    "/catalog-type/{id}/pricing-schedule.json": {
+      "get": {
+        "tags": [
+          "catalog-type"
+        ],
+        "summary": "Get All Pricing Schedule of Catalog Type",
+        "description": "",
+        "operationId": "getCatalogTypePricingSchedule",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Id of the Catalog Type"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/PricingScheduleList"
+            }
+          },
+          "404": {
+            "description": "Catalogs not found"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:catalogTypes",
+              "read:catalogTypes"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "catalog-type"
+        ],
+        "summary": "Add a Pricing Schedule to the Catalog Type",
+        "description": "",
+        "operationId": "addCatalogTypePricingSchedule",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Id of the Catalog Type"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Pricing Schedule object that needs to be added",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PricingSchedule"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:catalogTypes",
+              "read:catalogTypes"
+            ]
+          }
+        ]
+      }
+    },
+    "/catalog-type/{id}/pricing-schedule/{ps_id}.json": {
+      "get": {
+        "tags": [
+          "catalog-type"
+        ],
+        "summary": "Get Pricing Schedule by Id of the Catalog Type",
+        "description": "",
+        "operationId": "getCatalogTypePricingScheduleById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Id of the Catalog Type"
+          },
+          {
+            "name": "ps_id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Id of the Pricing Schedule"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/PricingSchedule"
+            }
+          },
+          "400": {
+            "description": "Invalid Catalog Type or Pricing Schedule ID"
+          },
+          "404": {
+            "description": "Catalog Type or Pricing Schedule not found"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:catalogTypes",
+              "read:catalogTypes"
+            ]
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "catalog-type"
+        ],
+        "summary": "Update an existing Pricing Schedule of the Catalog Type",
+        "description": "",
+        "operationId": "updateCatalogTypePricingSchedule",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Id of the Catalog"
+          },
+          {
+            "name": "ps_id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Id of the Pricing Schedule"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Pricing Schedule object that needs to be updated",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PricingSchedule"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Pricing Schedule not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:catalogTypes",
+              "read:catalogTypes"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "catalog-type"
+        ],
+        "summary": "Delete Pricing Schedule from Catalog Type",
+        "description": "",
+        "operationId": "deleteCatalogTypePricingSchedule",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Id of the Catalog"
+          },
+          {
+            "name": "ps_id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Id of the Pricing Schedule"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid Pricing Schedule ID"
+          },
+          "404": {
+            "description": "Pricing Schedule not found"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:catalogTypes",
+              "read:catalogTypes"
+            ]
+          }
+        ]
+      }
+    },
+    "/pricing-schedule.json": {
+      "get": {
+        "tags": [
+          "pricing-schedule"
+        ],
+        "summary": "Get All Pricing Schedule",
+        "description": "",
+        "operationId": "getPricingSchedule",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/PricingScheduleList"
+            }
+          },
+          "404": {
+            "description": "Pricing Schedule not found"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:pricingSchedule",
+              "read:pricingSchedule"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "pricing-schedule"
+        ],
+        "summary": "Add a new Pricing Schedule",
+        "description": "",
+        "operationId": "addPricingSchedule",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Pricing Schedule object that needs to be added",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PricingSchedule"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:pricingSchedule",
+              "read:pricingSchedule"
+            ]
+          }
+        ]
+      }
+    },
+    "/pricing-schedule/{id}.json": {
+      "get": {
+        "tags": [
+          "pricing-schedule"
+        ],
+        "summary": "Get Pricing Schedule by Id",
+        "description": "",
+        "operationId": "getPricingScheduleById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Id of the Pricing Schedule"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/PricingSchedule"
+            }
+          },
+          "400": {
+            "description": "Invalid Pricing Schedule ID"
+          },
+          "404": {
+            "description": "Pricing Schedule not found"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:pricingSchedule",
+              "read:pricingSchedule"
+            ]
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "pricing-schedule"
+        ],
+        "summary": "Update an existing Pricing Schedule",
+        "description": "",
+        "operationId": "updatePricingSchedule",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Id of the Pricing Schedule"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Pricing Schedule object that needs to be updated",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PricingSchedule"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Pricing Schedule not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:pricingSchedule",
+              "read:pricingSchedule"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "pricing-schedule"
+        ],
+        "summary": "Delete Pricing Schedule",
+        "description": "",
+        "operationId": "deletePricingSchedule",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Id of the Pricing Schedule"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid Pricing Schedule ID"
+          },
+          "404": {
+            "description": "Pricing Schedule not found"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:pricingSchedule",
+              "read:pricingSchedule"
+            ]
+          }
+        ]
+      }
+    },
+    "/pricebreak.json": {
+      "get": {
+        "tags": [
+          "pricebreak"
+        ],
+        "summary": "Get All Pricebreak",
+        "description": "",
+        "operationId": "getPricebreak",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/PricebreakList"
+            }
+          },
+          "404": {
+            "description": "Pricebreak not found"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:pricebreak",
+              "read:pricebreak"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "pricebreak"
+        ],
+        "summary": "Add a new Pricebreak",
+        "description": "",
+        "operationId": "addPricebreak",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Pricebreak object that needs to be added",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Pricebreak"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:pricebreak",
+              "read:pricebreak"
+            ]
+          }
+        ]
+      }
+    },
+    "/pricebreak/{id}.json": {
+      "get": {
+        "tags": [
+          "pricebreak"
+        ],
+        "summary": "Get Pricebreak by Id",
+        "description": "",
+        "operationId": "getPricebreakById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Id of the Pricebreak"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Pricebreak"
+            }
+          },
+          "400": {
+            "description": "Invalid Pricebreak ID"
+          },
+          "404": {
+            "description": "Pricebreak not found"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:pricebreak",
+              "read:pricebreak"
+            ]
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "pricebreak"
+        ],
+        "summary": "Update an existing Pricebreak",
+        "description": "",
+        "operationId": "updatePricebreak",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Id of the Pricebreak"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Pricebreak object that needs to be updated",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Pricebreak"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Pricebreak not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:pricebreak",
+              "read:pricebreak"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "pricebreak"
+        ],
+        "summary": "Delete Pricebreak",
+        "description": "",
+        "operationId": "deletePricebreak",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Id of the Pricebreak"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid Pricebreak ID"
+          },
+          "404": {
+            "description": "Pricebreak not found"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:pricebreak",
+              "read:pricebreak"
+            ]
+          }
+        ]
+      }
+    },
+    "/catalog.json": {
+      "get": {
+        "tags": [
+          "catalog"
+        ],
+        "summary": "Get All Catalogs",
+        "description": "",
+        "operationId": "getCatalogList",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/CatalogList"
+            }
+          },
+          "404": {
+            "description": "Catalogs not found"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:catalog",
+              "read:catalog"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "catalog"
+        ],
+        "summary": "Add a new Catalog",
+        "description": "",
+        "operationId": "addCatalog",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Catalog object that needs to be added",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Catalog"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:catalog",
+              "read:catalog"
+            ]
+          }
+        ]
+      }
+    },
+    "/catalog/{id}.json": {
+      "get": {
+        "tags": [
+          "catalog"
+        ],
+        "summary": "Get Catalog by Id",
+        "description": "",
+        "operationId": "getCatalogById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Id of the Catalog"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Catalog"
+            }
+          },
+          "400": {
+            "description": "Invalid Catalog ID"
+          },
+          "404": {
+            "description": "Catalog not found"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:catalog",
+              "read:catalog"
+            ]
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "catalog"
+        ],
+        "summary": "Update an existing Catalog",
+        "description": "",
+        "operationId": "updateCatalog",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Id of the Catalog"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Catalog object that needs to be updated",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Catalog"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Catalog not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:catalog",
+              "read:catalog"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "catalog"
+        ],
+        "summary": "Delete Catalog",
+        "description": "",
+        "operationId": "deleteCatalog",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Id of the Catalog"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid Catalog ID"
+          },
+          "404": {
+            "description": "Catalog not found"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:catalog",
+              "read:catalog"
+            ]
+          }
+        ]
+      }
+    },
+    "/catalog/{id}/sublevel/{type}.json": {
+      "get": {
+        "tags": [
+          "catalog"
+        ],
+        "summary": "Get All Catalog Sublevels",
+        "description": "",
+        "operationId": "getCatalogSublevel",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Id of the Catalog"
+          },
+          {
+            "name": "type",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Type of Catalog Sublevel"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/CatalogList"
+            }
+          },
+          "404": {
+            "description": "Catalogs not found"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:catalog",
+              "read:catalog"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "catalog"
+        ],
+        "summary": "Add a new Catalog Sublevel",
+        "description": "",
+        "operationId": "addCatalogSublevel",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Id of the Catalog"
+          },
+          {
+            "name": "type",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Type of Catalog Sublevel"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Catalog object that needs to be added",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Catalog"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:catalog",
+              "read:catalog"
+            ]
+          }
+        ]
+      }
+    },
+    "/catalog/{id}/sublevel/{type}/{sub_id}.json": {
+      "get": {
+        "tags": [
+          "catalog"
+        ],
+        "summary": "Get Catalog Sublevel by Id",
+        "description": "",
+        "operationId": "getCatalogSublevelById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Id of the Catalog"
+          },
+          {
+            "name": "type",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Type of Catalog Sublevel"
+          },
+          {
+            "name": "sub_id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Id of the Catalog Sublevel"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Catalog"
+            }
+          },
+          "400": {
+            "description": "Invalid Catalog ID"
+          },
+          "404": {
+            "description": "Catalog not found"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:catalog",
+              "read:catalog"
+            ]
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "catalog"
+        ],
+        "summary": "Update an existing Catalog Sublevel",
+        "description": "",
+        "operationId": "updateCatalogSublevel",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Id of the Catalog"
+          },
+          {
+            "name": "type",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Type of Catalog Sublevel"
+          },
+          {
+            "name": "sub_id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Id of the Catalog Sublevel"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Catalog object that needs to be updated",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Catalog"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Catalog not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:catalog",
+              "read:catalog"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "catalog"
+        ],
+        "summary": "Delete Catalog",
+        "description": "",
+        "operationId": "deleteCatalogSublevel",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Id of the Catalog"
+          },
+          {
+            "name": "type",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Type of Catalog Sublevel"
+          },
+          {
+            "name": "sub_id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Id of the Catalog"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid Catalog ID"
+          },
+          "404": {
+            "description": "Catalog not found"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:catalog",
+              "read:catalog"
+            ]
+          }
+        ]
+      }
+    },
+    "/product.json": {
+      "get": {
+        "tags": [
+          "product"
+        ],
+        "summary": "Get All Product",
+        "description": "",
+        "operationId": "getProductList",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ProductList"
+            }
+          },
+          "404": {
+            "description": "Products not found"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:product",
+              "read:product"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "product"
+        ],
+        "summary": "Add a new Product",
+        "description": "",
+        "operationId": "addProduct",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Product object that needs to be added",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:product",
+              "read:product"
+            ]
+          }
+        ]
+      }
+    },
+    "/product/{id}.json": {
+      "get": {
+        "tags": [
+          "product"
+        ],
+        "summary": "Get Product by Id",
+        "description": "",
+        "operationId": "getProductById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Id of the Product"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          },
+          "400": {
+            "description": "Invalid Product ID"
+          },
+          "404": {
+            "description": "Product not found"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:product",
+              "read:product"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "product"
+        ],
+        "summary": "Update an existing Product",
+        "description": "",
+        "operationId": "updateProduct",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Id of the Product"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Product object that needs to be updated",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Product not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:product",
+              "read:product"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "product"
+        ],
+        "summary": "Delete Product",
+        "description": "",
+        "operationId": "deleteProduct",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The Id of the Product that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid Product ID"
+          },
+          "404": {
+            "description": "Product not found"
+          }
+        },
+        "security": [
+          {
+            "essmed_auth": [
+              "write:product",
+              "read:product"
+            ]
+          }
+        ]
+      }
+    },
+    "/user": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Create user",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "createUser",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "loginUser",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The user name for login",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password for login in clear text",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            },
+            "headers": {
+              "X-Rate-Limit": {
+                "type": "integer",
+                "format": "int32",
+                "description": "calls per hour allowed by the user"
+              },
+              "X-Expires-After": {
+                "type": "string",
+                "format": "date-time",
+                "description": "date in UTC when token expires"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid username/password supplied"
+          }
+        }
+      }
+    },
+    "/user/logout": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Logs out current logged in user session",
+        "description": "",
+        "operationId": "logoutUser",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/user/{username}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get user by user name",
+        "description": "",
+        "operationId": "getUserByName",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The name that needs to be fetched. Use user1 for testing. ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Invalid username supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Updated user",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "updateUser",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "name that need to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid user supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Delete user",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "deleteUser",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The name that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid username supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "essmed_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "http://essential-medical.swagger.io/oauth/dialog",
+      "flow": "implicit",
+      "scopes": {
+        "write:catalogTypes": "modify catalogTypes",
+        "read:catalogTypes": "read catalogTypes",
+        "write:catalog": "modify catalog",
+        "read:catalog": "read catalog",
+        "write:product": "modify product",
+        "read:product": "read product",
+        "write:pricingSchedule": "modify pricingSchedule",
+        "read:pricingSchedule": "read pricingSchedule",
+        "write:pricebreak": "modify pricebreak",
+        "read:pricebreak": "read pricebreak"
+      }
+    },
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "CatalogType": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "description": "Catalog Type"
+        },
+        "parent": {
+          "type": "string",
+          "default": "none",
+          "description": "Parent Catalog Type ID"
+        },
+        "active": {
+          "type": "boolean",
+          "default": true
+        },
+        "order": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pricing_schedule": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PricingSchedule"
+          }
+        },
+        "extendedFields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ExtendedFields"
+          }
+        }
+      },
+      "xml": {
+        "name": "CatalogType"
+      }
+    },
+    "CatalogTypeList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/CatalogType"
+      },
+      "xml": {
+        "name": "CatalogTypeList"
+      }
+    },
+    "Catalog": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "description": "Catalog Type ID"
+        },
+        "active": {
+          "type": "boolean",
+          "default": true
+        },
+        "order": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sublevel": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Catalog"
+          }
+        },
+        "pricing_schedule": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PricingSchedule"
+          }
+        },
+        "extendedFields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ExtendedFields"
+          }
+        }
+      },
+      "xml": {
+        "name": "Catalog"
+      }
+    },
+    "CatalogList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Catalog"
+      },
+      "xml": {
+        "name": "CatalogList"
+      }
+    },
+    "ExtendedFields": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "ExtendedFields"
+      }
+    },
+    "PricingSchedule": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean",
+          "default": true
+        },
+        "usergroup_id": {
+          "type": "string",
+          "description": "Usergorup ID"
+        },
+        "pricebreaks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Pricebreak"
+          }
+        },
+        "multiplier": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "xml": {
+        "name": "PricingSchedule"
+      }
+    },
+    "PricingScheduleList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/PricingSchedule"
+      },
+      "xml": {
+        "name": "PricingScheduleList"
+      }
+    },
+    "Pricebreak": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "price": {
+          "type": "number"
+        }
+      },
+      "xml": {
+        "name": "Pricebreak"
+      }
+    },
+    "PricebreakList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/PricingSchedule"
+      },
+      "xml": {
+        "name": "PricebreakList"
+      }
+    },
+    "Product": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean",
+          "default": true
+        },
+        "order": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sublevels": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Catalog"
+          }
+        },
+        "extendedFields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ExtendedFields"
+          }
+        }
+      },
+      "xml": {
+        "name": "Product"
+      }
+    },
+    "ProductList": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Product"
+          }
+        }
+      },
+      "xml": {
+        "name": "ProductList"
+      }
+    },
+    "ProductAssignment": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "catalog_type_id": {
+          "type": "string"
+        },
+        "catalog_id": {
+          "type": "string"
+        },
+        "product_id": {
+          "type": "string"
+        },
+        "usergroup_id": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "ProductAssignment"
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "username": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "userStatus": {
+          "type": "integer",
+          "format": "int32",
+          "description": "User Status"
+        }
+      },
+      "xml": {
+        "name": "User"
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}
