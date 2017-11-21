@@ -2,113 +2,167 @@
     <div id="catalog-type">
         <h1>Catalog Type CRUD</h1>
 
-        <div class="block">
-            <div class="col3">
-                <h3>Catalog Type Form</h3>
-                <div class="form-catalog-type">
-                    <div class="field-row">
-                        <span class="form-group__message" v-if="$v.model.$invalid">Form is not Valid</span>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h3>Catalog Type Form</h3>
+                    <div class="form-catalog-type text-left">
+                        <div class="field-row">
+                            <span class="form-group__message" v-if="$v.model.$invalid">Form is not Valid</span>
+                        </div>
+                        <div class="field-row">
+                            <label for="id">Id:</label>
+                            <input id="id" readonly type="text" v-bind:value="model.id">
+                        </div>
+                        <div class="field-row">
+                            <label for="title">Title:</label>
+                            <div class="input-box">
+                                <input id="title" type="text" v-model="model.title">
+                                <span class="form-group__message" v-if="!$v.model.title.required">Title is required.</span>
+                                <span class="form-group__message" v-if="!$v.model.title.minLength">Title must have at least {{ $v.model.title.$params.minLength.min }} letters.</span>
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <label for="description">Description:</label>
+                            <div class="input-box">
+                                <textarea id="description" cols="32" rows="3" v-model="model.description"></textarea>
+                                <span class="form-group__message" v-if="!$v.model.description.minLength">Description must have at least {{ $v.model.description.$params.minLength.min }} letters.</span>
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <label for="type">Type:</label>
+                            <div class="input-box">
+                                <input type="text" id="type" v-model="model.type">
+                                <span class="form-group__message" v-if="!$v.model.type.required">Type is required.</span>
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <label for="parent">Parent:</label>
+                            <div class="input-box">
+                                <select id="parent" v-model="model.parent">
+                                    <option value="none">None</option>
+                                    <option v-for="(option, index) in fb_catalogType" :value="option.id">{{ option.title }}</option>
+                                </select>
+                                <!--<span class="form-group__message" v-if="!$v.model.parent.required">Name is required.</span>-->
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <label for="active">Active:</label>
+                            <div class="input-box">
+                                <input type="checkbox" id="active" v-model="model.active">
+                                <span class="form-group__message" v-if="!$v.model.active.required">Status is required.</span>
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <label for="order">Order:</label>
+                            <div class="input-box">
+                                <input type="number" id="order" v-model="model.order">
+                                <span class="form-group__message" v-if="!$v.model.order.required">Order is required.</span>
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <label for="price_schedule">Pricing Schedule:</label>
+                            <div class="input-box">
+                                <select id="price_schedule" @change="updateModelPricingSchedule" v-model="model['pricing-schedule-id']">
+                                    <option value="">None</option>
+                                    <option v-for="(option, index) in fb_PricingSchedule" :value="option.id">{{ option.title }}
+                                        <template v-if="option.multiplier">(M)</template>
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn-sm btn-success" :disabled="buttons.create.disabled" v-if="model.id === ''" @click.prevent="create">Create CatalogType</button>
+                        <button class="btn-sm btn-success" :disabled="buttons.update.disabled" v-if="model.id !== ''" @click.prevent="update">Update CatalogType</button>
+                        <button class="btn-sm btn-warning" @click.prevent="resetForm">Reset</button>
+
                     </div>
-                    <div class="field-row">
-                        <label for="ct_id">Id:</label>
-                        <input id="ct_id" type="text" v-bind:value="model.id"><i>Hidden</i>
-                    </div>
-                    <div class="field-row">
-                        <label for="ct_title">Title:</label>
-                        <div class="input-box">
-                            <input id="ct_title" type="text" v-model="model.title">
-                            <span class="form-group__message" v-if="!$v.model.title.required">Name is required.</span>
-                            <span class="form-group__message" v-if="!$v.model.title.minLength">Name must have at least {{ $v.model.title.$params.minLength.min }} letters.</span>
+                </div>
+                <div class="col-8">
+                    <h3>Catalog Type List (VueFire)</h3>
+                    <div class="row border-bottom text-left" v-for="(catalogType, key) in fb_catalogType" v-bind:key="catalogType['.key']">
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-3"><b>Order:</b></div>
+                                <div class="col-9">{{catalogType.order}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3"><b>ID:</b></div>
+                                <div class="col-9">{{catalogType['.key']}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3"><b>Title:</b></div>
+                                <div class="col-9">{{catalogType.title}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3"><b>Description:</b></div>
+                                <div class="col-9">{{catalogType.description}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3"><b>Type:</b></div>
+                                <div class="col-9">{{catalogType.type}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3"><b>Active:</b></div>
+                                <div class="col-9">{{catalogType.active}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3"><b>Parent:</b></div>
+                                <div class="col-9">{{catalogType.parent}}</div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <b>Pricing Schedule:</b>
+                            <div v-if="catalogType['pricing-schedule']">
+                                <div class="row">
+                                    <div class="col-3"><b>{{ catalogType['pricing-schedule'].title }}:</b></div>
+                                    <div class="col-9" v-if="'object' === typeof catalogType['pricing-schedule'].pricebreak">
+
+                                        <ul v-if="catalogType['pricing-schedule'].pricebreak.length" v-for="pb in catalogType['pricing-schedule'].pricebreak">
+                                            <li><b>{{ pb.amount }}</b> - {{ pb.price }}</li>
+                                        </ul>
+                                    </div>
+                                    <div v-else class="col-9">
+                                        <i>Pricebreaks not found</i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-else>
+                                <i>Not set</i>
+                            </div>
+                        </div>
+                        <div class="col-2 text-center">
+                            <b>Actions</b>
+                            <button class="btn-sm btn-primary" @click="editModel(catalogType['.key'])">Edit</button>
+                            <button class="btn-sm btn-danger" @click="deleteModel(catalogType._ref)">delete</button>
                         </div>
                     </div>
-                    <div class="field-row">
-                        <label for="ct_description">Description:</label>
-                        <div class="input-box">
-                            <input id="ct_description" type="text" v-model="model.description">
-                            <span class="form-group__message" v-if="!$v.model.description.minLength">Name must have at least {{ $v.model.description.$params.minLength.min }} letters.</span>
-                        </div>
-                    </div>
-                    <div class="field-row">
-                        <label for="ct_type">Type:</label>
-                        <div class="input-box">
-                            <input type="text" id="ct_type" v-model="model.type">
-                            <span class="form-group__message" v-if="!$v.model.type.required">Name is required.</span>
-                        </div>
-                    </div>
-                    <div class="field-row">
-                        <label for="ct_parent">Parent:</label>
-                        <div class="input-box">
-                            <select id="ct_parent" v-model="model.parent">
-                                <option value="">None</option>
-                                <option v-for="(option, index) in fb_catalogType" :value="option.id">{{ option.title }}</option>
-                            </select>
-                            <!--<span class="form-group__message" v-if="!$v.model.parent.required">Name is required.</span>-->
-                        </div>
-                    </div>
-                    <div class="field-row">
-                        <label for="ct_active">Active:</label>
-                        <div class="input-box">
-                            <input type="checkbox" id="ct_active" v-model="model.active">
-                            <span class="form-group__message" v-if="!$v.model.active.required">Name is required.</span>
-                        </div>
-                    </div>
-                    <div class="field-row">
-                        <label for="ct_order">Order:</label>
-                        <div class="input-box">
-                            <input type="number" id="ct_order" v-model="model.order">
-                            <span class="form-group__message" v-if="!$v.model.order.required">Name is required.</span>
-                        </div>
-                    </div>
-                    <button v-if="model.id === ''" @click.prevent="createCatalogType">Create CatalogType</button>
-                    <button v-if="model.id !== ''" @click.prevent="updateCatalogType">Update CatalogType</button>
-                    <button @click.prevent="resetFormCatalogType">Reset</button>
                 </div>
             </div>
-            <div class="col2-3">
-                <h3>Catalog Type List (VueFire)</h3>
-                <table>
-                    <tr v-for="(catalogType, key) in fb_catalogType" v-bind:key="catalogType['.key']">
-                        <td>
-                            <b>{{catalogType.order}}</b>
-                        </td>
-                        <td>
-                            <b>Id:</b> {{catalogType['.key']}}
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                            <b>Title:</b> {{catalogType.title}}
-                        </td>
-                        <td>
-                            <b>Type:</b> {{catalogType.type}}
-                        </td>
-                        <td>
-                            <b>Parent:</b> {{catalogType.parent}}
-                        </td>
-                        <td>
-                            <b>Controls:</b>
-                            <button @click="editModelCatalogType(catalogType['.key'])">Edit</button>
-                            <button @click="deleteModelCatalogType(catalogType['.key'])">delete</button>
-                        </td>
-                    </tr>
-                </table>
-            </div>
         </div>
+
     </div>
 </template>
 
 <script>
     import {required, minLength, numeric} from 'vuelidate/lib/validators'
     import CatalogType from '../Models/CatalogType'
-
+    import PricingSchedule from '../Models/PricingSchedule'
 
     export default {
         name: 'App',
         data () {
             return {
                 msg: 'Create Catalog Types',
+                buttons: {
+                    update: {
+                        disabled: false
+                    },
+                    create: {
+                        disabled: false
+                    }
+                },
                 CatalogType: CatalogType,
-                model: CatalogType.model,
+                model: CatalogType.copy(CatalogType.getModel()),
                 listData: [],
             }
         },
@@ -122,107 +176,70 @@
                 cancelCallback(err) {
                     console.error(err);
                 }
+            },
+            fb_PricingSchedule: {
+                source: PricingSchedule.ref().orderByChild('active').equalTo(true),
+                // Optional, allows you to handle any errors.
+                cancelCallback(err) {
+                    console.error(err);
+                }
             }
         },
         methods: {
-            resetFormCatalogType: function () {
+            resetForm: function () {
                 this.model = this.CatalogType.reset()
                 this.model.$reset
             },
-            createCatalogType: function () {
+            create: function () {
                 if (!this.$v.model.$invalid) {
                     CatalogType.setAttributes(this.model)
                     CatalogType.create()
-                    this.resetFormCatalogType()
+                    this.resetForm()
                 }
             },
-            updateCatalogType: function () {
+            update: function () {
                 if (!this.$v.model.$invalid) {
                     CatalogType.setAttributes(this.model)
                     CatalogType.update()
-                    this.resetFormCatalogType()
+                    this.resetForm()
                 }
             },
-            editModelCatalogType(key){
+            editModel(key){
                 var $this = this
                 CatalogType.findById(key).then(function (snapshot) {
                     $this.model = snapshot.val()
                     $this.model.id = snapshot.key
+//                    $this.model['pricing-schedule'] = $this.model['pricing-schedule'].id
                 })
                 this.$v.model.$reset
             },
-            deleteModelCatalogType(key){
+            deleteModel(key){
                 CatalogType.delete(key)
+            },
+            updateModelPricingSchedule: function () {
+                var $that = this;
+
+                if($that.model['pricing-schedule-id'] !== '' && $that.model['pricing-schedule-id'] !== undefined){
+                    $that.buttons.create.disabled = true;
+                    $that.buttons.update.disabled = true;
+
+                    PricingSchedule.findById($that.model['pricing-schedule-id']).then(function (s) {
+                        $that.model['pricing-schedule'] = CatalogType.copy(s.val());
+
+                        $that.buttons.create.disabled = false;
+                        $that.buttons.update.disabled = false;
+                    });
+                } else {
+                    $that.model['pricing-schedule'] = [];
+                }
             }
         },
         created: function () {
-//            var $this = this
-//
-//            $this.listData = CatalogType.findAllOrderBy('order').then(function (snapshot) {
-//                console.log(snapshot)
-//                $this.listData = snapshot.val()
-//            })
-
-//            CatalogType.findAllOrderBy('order').equalTo('Alex').on('child_added',  ...)
         }
     }
 </script>
 
 <style lang="scss">
-    #app {
-        font-family: 'Avenir', Helvetica, Arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        text-align: center;
-        color: #2c3e50;
-        margin-top: 60px;
-    }
-
-    h1, h2 {
-        font-weight: normal;
-    }
-
-    ul {
-        list-style-type: none;
-        padding: 0;
-    }
-
-    li {
-        margin: 0 10px;
-        width: 100%;
-    }
-
-    a {
-        color: #42b983;
-    }
-
-    .block {
-        width: 100%;
-        min-width: 400px;
-        max-width: 1200px;
-        min-height: 10px;
-        margin: 0 auto;
-        text-align: left;
-    }
-
-    .col2 {
-        width: 49%;
-        padding-left: 5px;
-        float: left;
-    }
-
-    .col3, .col1-3 {
-        width: 33%;
-        padding-left: 5px;
-        float: left;
-    }
-
-    .col2-3 {
-        width: 66%;
-        padding-left: 5px;
-        float: left;
-    }
-
     .form-catalog-type {
         width: 100%;
         min-width: 200px;
