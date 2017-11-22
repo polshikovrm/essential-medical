@@ -53,6 +53,7 @@
             this.$bindAsArray('listSections', this.$firebaseRefs.fb_catalog.orderByChild('order'));
 
             BUS.$on('editCatalog', (data) => {
+                this.resetForm();
                 this.model = Catalog.copy(data);
             });
             BUS.$on('addSubModel', (data) => {

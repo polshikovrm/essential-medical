@@ -225,7 +225,6 @@
                 this.model.$reset
             },
             create: function () {
-                debugger
                 if (!this.$v.model.$invalid) {
                     this.Object.setAttributes(this.model)
                     this.Object.create()

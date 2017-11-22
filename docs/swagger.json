@@ -3,11 +3,14 @@
   "info": {
     "description": "Demo App for Essential Medical",
     "version": "0.0.1",
-    "title": "Essential Medical",
-    "termsOfService": "http://swagger.io/terms/"
+    "title": "Essential Medical"
   },
   "host": "api-essmed.firebaseio.com",
   "basePath": "/",
+  "externalDocs": {
+    "description": "Product Catalog",
+    "url": "http://essential-medical.deployme.co.za/"
+  },
   "tags": [
     {
       "name": "catalog-type",
@@ -2098,9 +2101,5 @@
         "name": "User"
       }
     }
-  },
-  "externalDocs": {
-    "description": "Find out more about Swagger",
-    "url": "http://swagger.io"
   }
 }

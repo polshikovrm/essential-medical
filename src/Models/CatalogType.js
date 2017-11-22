@@ -58,7 +58,6 @@ class CatalogType extends Api {
 
 
     // update() {
-    //     debugger
     //     var $that = this;
     //     var $thatModel = this.copy(this.getModel());
     //

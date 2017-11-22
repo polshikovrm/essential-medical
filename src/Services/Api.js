@@ -94,7 +94,6 @@ class Api {
     }
 
     create() {
-        debugger
     // return this.ref().push(body);
     let newKey = '';
     if(this.model._ref){

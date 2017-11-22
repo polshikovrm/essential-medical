@@ -107,17 +107,15 @@
             typesList(){
                 if(this.parentModel.type == undefined){
                     this.parentModel.type = 'none';
+                    if(this.model.type !== undefined && this.model.id !== ""){
+                        this.$bindAsArray('items', CatalogType.ref().orderByChild('id').equalTo(this.model.type))
+                    } else {
+                        this.$bindAsArray('items', CatalogType.ref().orderByChild('parent').equalTo(this.parentModel.type))
+                    }
+                } else {
+                    this.$bindAsArray('items', CatalogType.ref().orderByChild('parent').equalTo(this.parentModel.type))
                 }
-//                let list = [];
-//                return CatalogType.ref().orderByChild('parent').equalTo(this.parentModel.type).once('value').then(function(snapshot){
-//                    Object.keys(snapshot.val()).map(function(objectKey, index) {
-//                        list.push(snapshot.val()[objectKey]);
-//                    });
-////                    snapshot.val()
-//                    console.log(list)
-//                    return list;
-//                });
-                this.$bindAsArray('items', CatalogType.ref().orderByChild('parent').equalTo(this.parentModel.type))
+
                 return this.items;
             }
         },
@@ -156,7 +154,6 @@
                 this.$emit('resetModel');
             },
             updateModelPricingSchedule: function () {
-                debugger
                 var $that = this;
 
                 if($that.model['pricing-schedule-id'] !== '' && $that.model['pricing-schedule-id'] !== undefined){
@@ -164,7 +161,6 @@
                     $that.buttons.update.disabled = true;
 
                     PricingSchedule.findById($that.model['pricing-schedule-id']).then(function (s) {
-                        debugger
                         $that.model['pricing-schedule'] = CatalogType.copy(s.val());
 
                         $that.buttons.create.disabled = false;

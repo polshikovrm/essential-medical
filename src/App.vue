@@ -7,6 +7,9 @@
                     <router-link to="/">Home</router-link>
                 </li>
                 <li>
+                    <a href="/docs/">Swagger</a>
+                </li>
+                <li>
                     <router-link to="/catalog-type">Catalog Type</router-link>
                 </li>
                 <li>
