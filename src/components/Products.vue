@@ -72,7 +72,7 @@
                                         <label for="catalogs">Catalogs:</label>
                                     </div>
                                     <div class="col-6">
-                                        <modal-simple :btnLabel="'Select'" :btnTarget="'product-form'" :modalTitle="'Catalog List'" :modalContent="''" :showUpdateButton="true" @updateModal="updateSelectedCatalogs">
+                                        <modal-simple v-show="fb_catalogs.length" :btnLabel="'Select'" :btnTarget="'product-form'" :modalTitle="'Catalog List'" :modalContent="''" :showUpdateButton="true" @updateModal="updateSelectedCatalogs" @openModal="compareCatalogList()">
                                             <template slot="modalCustomBody">
                                                 <div class="container">
 
@@ -261,7 +261,7 @@
                                         </div>
                                         <div class="col-2 text-center">
                                             <b>Actions</b>
-                                            <!--<button class="btn-sm btn-primary" @click="editModel(product['.key'])">Edit</button>-->
+                                            <button class="btn-sm btn-primary" @click="editModel(product['.key'])">Edit</button>
                                             <button class="btn-sm btn-danger" @click="deleteModel(product._ref)">delete</button>
                                         </div>
                                     </div>
@@ -294,6 +294,9 @@
         components: {
             'modal-simple': ModalSimple
         },
+        beforeCreate(){
+            this.$bindAsArray('fb_catalogs', Catalog.ref().orderByChild('active').equalTo(true));
+        },
         data () {
             return {
                 msg: 'Product CRUD',
@@ -312,46 +315,46 @@
             }
         },
         computed: {
-            catalogsList(){
-                debugger;
-
-                let $this = this;
-                let catalog = Catalog.copy($this.fb_catalogs);
-                let levelMultiplier = 1;
-                let levelRate = 0;
-
-                console.log('catalogsList', catalog);
-
-                Object.keys(catalog).map(function (sectionKey, i) {
-
-                    catalog[sectionKey].multiplier = Catalog.getMultiplier(catalog[sectionKey], $this.model.dependants);
-//                    catalog[sectionKey].rate = Catalog.getRate(catalog[sectionKey], $this.model.dependants);
-                    catalog[sectionKey].rate = 0;
-
-
-                    if (catalog[sectionKey].hasOwnProperty('sublevel')) {
-                        Object.keys(catalog[sectionKey].sublevel).map(function (benefitKey, i) {
-
-//                            catalog[sectionKey].sublevel[benefitKey].multiplier = Catalog.getMultiplier(catalog[sectionKey].sublevel[benefitKey], $this.model.dependants);
-//                            catalog[sectionKey].sublevel[benefitKey].rate = Catalog.getRate(catalog[sectionKey].sublevel[benefitKey], $this.model.dependants);
-
-                            if (catalog[sectionKey].sublevel[benefitKey].hasOwnProperty('sublevel')) {
-                                levelMultiplier = 1;
-                                levelRate = 0;
-
-                                Object.keys(catalog[sectionKey].sublevel[benefitKey].sublevel).map(function (levelKey, i) {
-
-                                    catalog[sectionKey].rate += Catalog.getRate(catalog[sectionKey].sublevel[benefitKey].sublevel[levelKey], $this.model.dependants);
-                                });
-                            }
-                        });
-                    }
-
-                    catalog[sectionKey].rate = catalog[sectionKey].rate * catalog[sectionKey].multiplier;
-                });
-
-                return catalog;
-            }
+//            catalogsList(){
+//                debugger;
+//
+//                let $this = this;
+//                let catalog = Catalog.copy($this.fb_catalogs);
+//                let levelMultiplier = 1;
+//                let levelRate = 0;
+//
+//                console.log('catalogsList', catalog);
+//
+//                Object.keys(catalog).map(function (sectionKey, i) {
+//
+//                    catalog[sectionKey].multiplier = Catalog.getMultiplier(catalog[sectionKey], $this.model.dependants);
+////                    catalog[sectionKey].rate = Catalog.getRate(catalog[sectionKey], $this.model.dependants);
+//                    catalog[sectionKey].rate = 0;
+//
+//
+//                    if (catalog[sectionKey].hasOwnProperty('sublevel')) {
+//                        Object.keys(catalog[sectionKey].sublevel).map(function (benefitKey, i) {
+//
+////                            catalog[sectionKey].sublevel[benefitKey].multiplier = Catalog.getMultiplier(catalog[sectionKey].sublevel[benefitKey], $this.model.dependants);
+////                            catalog[sectionKey].sublevel[benefitKey].rate = Catalog.getRate(catalog[sectionKey].sublevel[benefitKey], $this.model.dependants);
+//
+//                            if (catalog[sectionKey].sublevel[benefitKey].hasOwnProperty('sublevel')) {
+//                                levelMultiplier = 1;
+//                                levelRate = 0;
+//
+//                                Object.keys(catalog[sectionKey].sublevel[benefitKey].sublevel).map(function (levelKey, i) {
+//
+//                                    catalog[sectionKey].rate += Catalog.getRate(catalog[sectionKey].sublevel[benefitKey].sublevel[levelKey], $this.model.dependants);
+//                                });
+//                            }
+//                        });
+//                    }
+//
+//                    catalog[sectionKey].rate = catalog[sectionKey].rate * catalog[sectionKey].multiplier;
+//                });
+//
+//                return catalog;
+//            }
         },
         created () {
             this.Object.model = this.model;
@@ -361,7 +364,7 @@
         },
         firebase: {
             fb_products: Product.ref(),
-            fb_catalogs: Catalog.ref().orderByChild('active').equalTo(true)
+//            fb_catalogs: Catalog.ref().orderByChild('active').equalTo(true)
         },
         methods: {
             orderBy(list, field, sort){
@@ -463,7 +466,42 @@
                     }
                 });
                 this.model.catalogs = this.Object.copy(catalog);
-                this.model.rate = parseFloat($this.model.rate).toFixed(2);;
+                this.model.rate = parseFloat($this.model.rate).toFixed(2);
+            },
+            compareCatalogList: function () {
+                let $this = this;
+
+                if($this.model.catalogs.length){
+                    console.log($this.model.catalogs, $this.fb_catalogs);
+                    Object.keys($this.fb_catalogs).map(function (sectionKey, index) {
+                        if($this.model.catalogs.hasOwnProperty(sectionKey)){
+                            $this.fb_catalogs[sectionKey].isSelected = $this.model.catalogs[sectionKey].isSelected;
+                        } else {
+                            $this.fb_catalogs[sectionKey].isSelected = false;
+                        }
+
+                        if ($this.fb_catalogs[sectionKey].hasOwnProperty('sublevel')) {
+                            Object.keys($this.fb_catalogs[sectionKey].sublevel).map(function (benefitKey, i) {
+                                if($this.model.catalogs[sectionKey].sublevel.hasOwnProperty(benefitKey)){
+                                    $this.fb_catalogs[sectionKey].sublevel[benefitKey].isSelected = $this.model.catalogs[sectionKey].sublevel[benefitKey].isSelected;
+                                } else {
+                                    $this.fb_catalogs[sectionKey].sublevel[benefitKey].isSelected = false;
+                                }
+
+                                if ($this.fb_catalogs[sectionKey].sublevel[benefitKey].hasOwnProperty('sublevel')) {
+                                    Object.keys($this.fb_catalogs[sectionKey].sublevel[benefitKey].sublevel).map(function (levelKey, j) {
+                                        if($this.model.catalogs[sectionKey].sublevel[benefitKey].sublevel.hasOwnProperty(levelKey)){
+                                            $this.fb_catalogs[sectionKey].sublevel[benefitKey].sublevel[levelKey].isSelected = $this.model.catalogs[sectionKey].sublevel[benefitKey].sublevel[levelKey].isSelected;
+                                        } else {
+                                            $this.fb_catalogs[sectionKey].sublevel[benefitKey].sublevel[levelKey].isSelected = false;
+                                        }
+
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
             },
             resetForm: function () {
                 this.model = this.Object.reset();

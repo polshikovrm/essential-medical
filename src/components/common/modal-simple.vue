@@ -1,6 +1,6 @@
 <template>
     <div class="modal-simple">
-        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" :data-target="'#' + btnTarget">
+        <button type="button" @click.prevent="openModal" class="btn btn-info btn-sm" data-toggle="modal" :data-target="'#' + btnTarget">
             <!--<template v-if="btnLabel">-->
                 {{ btnLabel }}
             <!--</template>-->
@@ -54,13 +54,16 @@ USAGE:
             return {}
         },
         methods: {
+            openModal(){
+                this.$emit('openModal');
+            },
             closeModal(){
                 this.$emit('closeModal');
             },
             updateModal(){
                 this.$emit('updateModal');
             }
-        }
+        },
     }
 </script>
 
