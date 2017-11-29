@@ -51,12 +51,12 @@
                                     <div class="row pricebrea-list">
                                         <div class="col-8">
                                             <div class="row">
-                                                <div class="col-6">
-                                                    <label for="amount">Amount:</label>
+                                                <div class="col-12">
+                                                    <p>Dependants: {{ index }}</p>
                                                 </div>
-                                                <div class="col-6">
-                                                    <input id="amount" type="text" v-model="pricebreakItem.amount">
-                                                </div>
+                                                <!--<div class="col-6">-->
+                                                    <!--<input id="amount" readonly type="text" :value="">-->
+                                                <!--</div>-->
                                             </div>
                                             <div class="row">
                                                 <div class="col-6">
@@ -107,12 +107,12 @@
                                             <div class="col-9">{{item.multiplier}}</div>
                                         </div>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <b>Pricebreaks:</b>
                                         <div v-if="item.pricebreak.length > 0">
                                             <ul>
                                                 <li v-for="(value, index) in item.pricebreak">
-                                                    <b>Amount:</b> {{value.amount}}<br>
+                                                    <b>Dependants:</b> {{index}}<br>
                                                     <b>Price:</b> {{value.price}}
                                                 </li>
                                             </ul>
@@ -121,9 +121,10 @@
                                             <i>Pricebreaks not found</i>
                                         </div>
                                     </div>
-                                    <div class="col-2 text-center">
-                                        <b>Actions</b>
+                                    <div class="col-3 text-center">
+                                        <div><b>Actions</b></div>
                                         <button class="btn-sm btn-primary" @click="editModel(item['.key'])">Edit</button>
+                                        <button class="btn-sm btn-secondary" @click="copyModel(item['.key'])">Copy</button>
                                         <button class="btn-sm btn-danger" @click="deleteModel(item._ref)">delete</button>
                                     </div>
                                 </div>
@@ -158,13 +159,13 @@
                                             <div class="col-9">{{item.multiplier}}</div>
                                         </div>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <b>Pricebreaks:</b>
                                         <div v-if="item.pricebreak.length > 0">
                                             <ul>
                                                 <li v-for="(value, index) in item.pricebreak">
-                                                    <b>Amount:</b> {{value.amount}}<br>
-                                                    <b>Rate:</b> {{value.price}}
+                                                    <b>Dependants:</b> {{index}}<br>
+                                                    <b>Price:</b> {{value.price}}
                                                 </li>
                                             </ul>
                                         </div>
@@ -172,9 +173,10 @@
                                             <i>Pricebreaks not found</i>
                                         </div>
                                     </div>
-                                    <div class="col-2 text-center">
-                                        <b>Actions</b>
+                                    <div class="col-3 text-center">
+                                        <div><b>Actions</b></div>
                                         <button class="btn-sm btn-primary" @click="editModel(item['.key'])">Edit</button>
+                                        <button class="btn-sm btn-secondary" @click="copyModel(item['.key'])">Copy</button>
                                         <button class="btn-sm btn-danger" @click="deleteModel(item['_ref'])">delete</button>
                                     </div>
                                 </div>
@@ -243,6 +245,17 @@
                 this.Object.findById(key).then(function (snapshot) {
                     $this.model = snapshot.val()
                     $this.model.id = snapshot.key
+                })
+                this.$v.model.$reset
+            },
+            copyModel(key){
+                var $this = this
+                this.Object.findById(key).then(function (snapshot) {
+                    console.log(snapshot.val())
+                    $this.model = $this.Object.copy(snapshot.val());
+                    $this.model.id = '';
+                    $this.model._ref = $this.Object.collection;
+                    console.info($this.model)
                 })
                 this.$v.model.$reset
             },

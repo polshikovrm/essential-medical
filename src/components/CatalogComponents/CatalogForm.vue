@@ -45,6 +45,12 @@
                             </div>
                         </div>
                         <div class="field-row">
+                            <label for="isSelected">Is Default:</label>
+                            <div class="input-box">
+                                <input type="checkbox" id="isSelected" v-model="model.isSelected">
+                            </div>
+                        </div>
+                        <div class="field-row">
                             <label for="active">Active:</label>
                             <div class="input-box">
                                 <input type="checkbox" id="active" v-model="model.active">
@@ -79,6 +85,8 @@
 </template>
 
 <script>
+    import {_} from 'vue-underscore'
+
     import CatalogType from '../../Models/CatalogType'
     import Catalog from '../../Models/Catalog'
     import PricingSchedule from '../../Models/PricingSchedule'
@@ -105,13 +113,16 @@
         },
         computed: {
             typesList(){
-                if(this.parentModel.type == undefined){
+                if (this.parentModel.type == undefined) {
                     this.parentModel.type = 'none';
-                    if(this.model.type !== undefined && this.model.id !== ""){
+
+                    if (this.model.type !== undefined && this.model.id !== "") {
                         this.$bindAsArray('items', CatalogType.ref().orderByChild('id').equalTo(this.model.type))
                     } else {
                         this.$bindAsArray('items', CatalogType.ref().orderByChild('parent').equalTo(this.parentModel.type))
                     }
+                    this.parentModel.type = undefined;
+
                 } else {
                     this.$bindAsArray('items', CatalogType.ref().orderByChild('parent').equalTo(this.parentModel.type))
                 }
@@ -119,11 +130,7 @@
                 return this.items;
             }
         },
-        watch: {
-            typesList: function(val){
-                this.model.type = this.items[0] !== undefined ? this.items[0].id : ''
-            }
-        },
+        watch: {},
         created(){},
         validations: {
             model: Catalog.validations.model
@@ -156,7 +163,7 @@
             updateModelPricingSchedule: function () {
                 var $that = this;
 
-                if($that.model['pricing-schedule-id'] !== '' && $that.model['pricing-schedule-id'] !== undefined){
+                if ($that.model['pricing-schedule-id'] !== '' && $that.model['pricing-schedule-id'] !== undefined) {
                     $that.buttons.create.disabled = true;
                     $that.buttons.update.disabled = true;
 

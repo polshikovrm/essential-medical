@@ -7,8 +7,8 @@ import Api from '../Services/Api'
 class Pricebreak extends Api {
     constructor() {
         super('pricebreak', {
-            "id": "",
-            "amount": 0,
+            // "id": "",
+            // "amount": 0,
             "price": 0
         });
 
@@ -23,10 +23,10 @@ class Pricebreak extends Api {
 
         this.validations = {
             model: {
-                amount: {
-                    required,
-                    numeric
-                },
+                // amount: {
+                //     required,
+                //     numeric
+                // },
                 price: {
                     required,
                     numeric

@@ -10,13 +10,16 @@
                     <a href="/docs/">Swagger</a>
                 </li>
                 <li>
+                    <router-link :to="{name:'pricing-schedule'}">Pricing Schedule</router-link>
+                </li>
+                <li>
                     <router-link to="/catalog-type">Catalog Type</router-link>
                 </li>
                 <li>
                     <router-link to="/catalog">Catalog</router-link>
                 </li>
                 <li>
-                    <router-link :to="{name:'pricing-schedule'}">Pricing Schedule</router-link>
+                    <router-link :to="{name:'products'}">Products</router-link>
                 </li>
             </ul>
         </div>
@@ -100,7 +103,7 @@
         display: block;
     }
 
-    .form-group__message {
+    .form-group__message, .error {
         color: red;
     }
 

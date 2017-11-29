@@ -9,6 +9,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <h5>{{ model.title }}</h5>
+                                        <template v-if="!model.active"><span class="error">(DISABLED)</span></template>
                                     </div>
                                     <div class="col-12">
                                         <p>{{ model.description }}</p>
@@ -16,15 +17,17 @@
                                 </div>
                             </td>
                             <td>
-                                <b>Type:</b> {{ modelTypeText[model.type].title }}
-                                {{ model.type }}
+                                <b>Type:</b>
+                                <template v-if="modelTypeText[model.type]">{{ modelTypeText[model.type].title }}</template>
+                                <template v-else><span class="error">(NOT FOUND)</span></template>
+                                ({{ model.type }})
                             </td>
                             <td width="110">
                                 <b>Controls:</b><br>
                                 <div class="row text-left">
                                     <div class="col-12">
                                         <template v-if="model['pricing-schedule']">
-                                            <modal-simple :btnLabel="'View Rates'" :btnTarget="model.slug + '-' + model.id" :modalTitle="'Pricing Schedule for ' + model.title" :modalContent="''">
+                                            <modal-simple :btnLabel="'View Rates'" :btnTarget="model.slug + '-' + model.id" :modalTitle="'Pricing Schedule for ' + model.title" :modalContent="''" :showUpdateButton="false">
                                                 <template slot="modalCustomBody">
                                                     <div v-if="model['pricing-schedule']">
                                                         <div class="row">
@@ -50,8 +53,11 @@
                                     <div class="col-12">
                                         <button type="button" class="btn-sm btn-primary" @click="editModel(model)">Edit Catalog</button>
                                     </div>
+                                    <!--<div class="col-12">-->
+                                    <!--<button v-if="modelTypeText[model.type].parent == 'none'" type="button" class="btn-sm btn-secondary" @click="copyModel(model)">Copy Catalog</button>-->
+                                    <!--</div>-->
                                     <div class="col-12">
-                                        <button type="button" class="btn-sm btn-secondary"  @click="addSubModel(model)">Add Sublevel</button>
+                                        <button type="button" class="btn-sm btn-secondary" @click="addSubModel(model)">Add Sublevel</button>
                                     </div>
                                     <div class="col-12">
                                         <button type="button" class="btn-sm btn-danger" @click="deleteModel(model)">Delete</button>
@@ -60,12 +66,15 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4">
+                            <td colspan="2">
                                 <b>ref:</b> {{ model._ref }}
                             </td>
+                            <td colspan="1">
+                                <button class="btn btn-sm btn-info" @click.prevent="sublevelToggler = !sublevelToggler">Sublevels {{sublevelToggler}}</button>
+                            </td>
                         </tr>
-                        <tr v-if="listSections.length">
-                            <td colspan="4">
+                        <tr v-show="sublevelToggler && listSections.length">
+                            <td colspan="3">
                                 <template v-for="catalogItem in listSections">
                                     <catalog-list :model="catalogItem" @update:listData="updateCatalogItem(newVal)" :level="level+1"></catalog-list>
                                 </template>
@@ -95,11 +104,11 @@
         data () {
             return {
                 msg: 'Catalog CRUD',
-                Catalog: Catalog
+                Catalog: Catalog,
+                sublevelToggler: false
             }
         },
-        computed: {
-        },
+        computed: {},
         created() {
 //            this.$firebaseRefs.fb_catalogSublevel = Catalog.fb.db.ref(this.$props.model._ref + 'sublevel/').orderByChild('order');
 
@@ -118,11 +127,16 @@
             editModel(model){
                 BUS.$emit('editCatalog', model);
             },
+//            copyModel(model){//TODO create new sublevel's _ref
+//                BUS.$emit('copyCatalog', model);
+//            },
             addSubModel(model){
                 BUS.$emit('addSubModel', model);
             },
             deleteModel(model){
-                BUS.$emit('deleteModel', model);
+                if (confirm('Delete Catalog "' + model.title + '"?')) {
+                    BUS.$emit('deleteModel', model);
+                }
             }
         }
     }
@@ -131,25 +145,25 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
     /*td{*/
-        /*border: 1px solid darkgray;*/
+    /*border: 1px solid darkgray;*/
     /*}*/
-    .level-1, .level-2, .level-3, .level-4{
+    .level-1, .level-2, .level-3, .level-4 {
         margin: 5px 0px 5px 0px;
     }
 
-    .level-1 td{
+    .level-1 td {
         border: 3px solid black;
     }
 
-    .level-2 td{
+    .level-2 td {
         border: 2px solid #999;
     }
 
-    .level-3 td{
+    .level-3 td {
         border: 1px solid #CCC;
     }
 
-    .level-4 td{
+    .level-4 td {
         border: 1px solid #EEE;
     }
 </style>

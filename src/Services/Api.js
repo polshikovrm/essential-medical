@@ -94,22 +94,23 @@ class Api {
     }
 
     create() {
-    // return this.ref().push(body);
-    let newKey = '';
-    if(this.model._ref){
-        newKey = fb.getRef(this.model._ref).push().key;
-        this.setAttribute('_ref', this.model._ref + newKey + '/')
-    } else {
-        newKey = this.ref().push().key;
-        this.setAttribute('_ref', this.collection + newKey + '/')
+        // return this.ref().push(body);
+        let newKey = '';
+        if (this.model._ref) {
+            newKey = fb.getRef(this.model._ref).push().key;
+            this.setAttribute('_ref', this.model._ref + newKey + '/')
+        } else {
+            newKey = this.ref().push().key;
+            this.setAttribute('_ref', this.collection + newKey + '/')
+        }
+        this.setAttribute('id', newKey)
+        // console.log(this.getModel(), this.model._ref);
+        return fb.getRef(this.model._ref).update(this.getModel());
     }
-    this.setAttribute('id', newKey)
-    return fb.getRef(this.model._ref).update(this.getModel());
-}
 
     update() {
         // console.log(this.model)
-        if(this.model._ref !== undefined){
+        if (this.model._ref !== undefined) {
             return fb.getRef(this.model._ref).set(this.model);
         }
         return this.refsByKey(this.model.id).set(this.model);

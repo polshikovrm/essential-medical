@@ -39,7 +39,7 @@
                         <div class="field-row">
                             <label for="parent">Parent:</label>
                             <div class="input-box">
-                                <select id="parent" v-model="model.parent">
+                                <select readonly id="parent" v-model="model.parent">
                                     <option value="none">None</option>
                                     <option v-for="(option, index) in fb_catalogType" :value="option.id">{{ option.title }}</option>
                                 </select>

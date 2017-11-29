@@ -24,7 +24,8 @@
                         <slot name="modalCustomBody"></slot>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button v-if="showUpdateButton" type="button" class="btn btn-primary" data-dismiss="modal" @click="updateModal">Update</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="closeModal">Close</button>
                     </div>
                 </div>
             </div>
@@ -35,7 +36,7 @@
 <!--
 USAGE:
 
-<modal-simple :btnLabel="" :btnTarget="" :modalTitle="" :modalContent="">
+<modal-simple :btnLabel="'btnLabel'" :btnTarget="'#'" :modalTitle="'modalTitle'" :modalContent="'modalContent'" :showUpdateButton="false">
     <template slot="modalCustomBody"></template>
 </modal-simple>
 -->
@@ -43,18 +44,23 @@ USAGE:
 <script>
     export default {
         name: 'modal-simple',
-        props: ['btnLabel', 'btnTarget', 'modalTitle', 'modalContent'],
+        props: ['btnLabel', 'btnTarget', 'modalTitle', 'modalContent', 'showUpdateButton'],
         computed:{
             modalLabel(){
                 return this.btnTarget; //todo unique
             }
         },
         data () {
-            return {
-                msg:'dfadfaf'
-            }
+            return {}
         },
-        methods: {}
+        methods: {
+            closeModal(){
+                this.$emit('closeModal');
+            },
+            updateModal(){
+                this.$emit('updateModal');
+            }
+        }
     }
 </script>
 

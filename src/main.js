@@ -4,6 +4,9 @@ import VueRouter from 'vue-router'
 import VueFire from 'vuefire'
 import Vuelidate from 'vuelidate'
 
+import underscore from 'vue-underscore';
+// Object.definePrototype(Vue.prototype, '_', { value: underscore });
+
 // import 'bootstrap/dist/css/bootstrap.css'
 // import 'bootstrap-vue/dist/bootstrap-vue.css'
 
@@ -11,11 +14,13 @@ import Vuelidate from 'vuelidate'
 Vue.use(VueRouter);
 Vue.use(VueFire);
 Vue.use(Vuelidate);
+Vue.use(underscore);
 
 // Components
 import App from './App.vue'
 import CatalogType from './components/CatalogType.vue'
 import Catalog from './components/Catalog.vue'
+import Product from './components/Products.vue'
 import PricingSchedule from './components/PricingSchedule.vue'
 // Components END
 
@@ -25,19 +30,20 @@ const router = new VueRouter({
     routes: [
         {
             path: '/catalog-type', component: CatalogType, name: "catalog-types",
-            children: [
-                {
-                    path: ':id', component: CatalogType,
-                    name: "catalog-type",
-                    children: [
-                        {
-                            path: 'pricing-schedule', component: CatalogType
-                        }
-                    ]
-                }
-            ]
+            // children: [
+            //     {
+            //         path: ':id', component: CatalogType,
+            //         name: "catalog-type",
+            //         children: [
+            //             {
+            //                 path: 'pricing-schedule', component: CatalogType
+            //             }
+            //         ]
+            //     }
+            // ]
         },
         {path: '/catalog', component: Catalog},
+        {path: '/products', name: "products", component: Product},
         {path: '/pricing-schedule', name: 'pricing-schedule', component: PricingSchedule}
     ]
 });

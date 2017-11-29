@@ -3,7 +3,7 @@
         <h1>{{ msg }}</h1>
         <div class="container">
             <div class="row">
-                <div class="col">
+                <div class="col-4">
                     <h3>Catalog Form</h3>
                     <h5 v-if="parentModel.title">Sublevel for {{parentModel.title}}</h5>
                     <catalog-form :model="model" :parentModel="parentModel" @resetModel="resetForm()" @updateModel="updateModel" @createModel="createModel"></catalog-form>
@@ -56,6 +56,13 @@
                 this.resetForm();
                 this.model = Catalog.copy(data);
             });
+//            BUS.$on('copyCatalog', (data) => {
+//                this.resetForm();
+//                this.model = Catalog.copy(data);
+//                this.model.id = '';
+//                delete this.model['.key'];
+//                this.model._ref = this.Catalog.collection;
+//            });
             BUS.$on('addSubModel', (data) => {
                 this.resetForm();
                 this.parentModel = Catalog.copy(data);
@@ -114,29 +121,4 @@
 </script>
 
 <style lang="scss">
-    .form-catalog-type {
-        width: 100%;
-        min-width: 200px;
-        margin: 0 auto;
-    }
-
-    .form-catalog-type label {
-        width: 100px;
-        display: block;
-        float: left;
-    }
-
-    .field-row:after, .block:after {
-        display: block;
-        clear: both;
-        content: '';
-    }
-
-    .input-box span {
-        display: block;
-    }
-
-    .form-group__message {
-        color: red;
-    }
 </style>
